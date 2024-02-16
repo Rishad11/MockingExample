@@ -18,19 +18,8 @@ public class StringCalculator {
             numbers = numbers.substring(delimiterIndex + 1);
         }
 
-        String regex = Matcher.quoteReplacement(delimiter) + "|\\n";
-        Pattern pattern = Pattern.compile(regex);
-
-        List<String> numsList = new ArrayList<>();
-        Matcher matcher = pattern.matcher(numbers);
-        int start = 0;
-        while (matcher.find()) {
-            numsList.add(numbers.substring(start, matcher.start()));
-            start = matcher.end();
-        }
-        numsList.add(numbers.substring(start));
-
-        String[] nums = numsList.toArray(new String[0]);
+        String regex = "[" + delimiter + "\n]";
+        String[] nums = numbers.split(regex);
 
         int sum = 0;
         List<String> negatives = new ArrayList<>();
