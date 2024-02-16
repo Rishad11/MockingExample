@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -19,11 +20,23 @@ public class EmployeesTest {
         when(employeeRepository.findAll()).thenReturn(mockEmployees);
         when(bankService.pay(eq("1"), eq(1000.0))).thenReturn(true);
 
-        employees.payEmployees();
+        int payments = employees.payEmployees();
 
         verify(bankService, times(1)).pay(eq("1"), eq(1000.0));
 
         assertTrue(mockEmployees.get(0).isPaid());
 
     }
+
+    @Test
+    public void testPayEmployeesUnsuccessfullyWithStubAndSpy() {
+        EmployeeRepositorySpy employeeRepositorySpy = new EmployeeRepositorySpy();
+        BankServiceStub bankServiceStub = new BankServiceStub(false);
+        Employees employees = new Employees(employeeRepositorySpy, bankServiceStub);
+
+        int payments = employees.payEmployees();
+
+        assertEquals(0, payments);
+    }
 }
+
