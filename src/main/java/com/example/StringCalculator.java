@@ -13,12 +13,17 @@ public class StringCalculator {
 
         String delimiter = ",";
         if (numbers.startsWith("//")) {
-            int delimiterIndex = numbers.indexOf("\n");
-            delimiter = numbers.substring(2, delimiterIndex);
-            numbers = numbers.substring(delimiterIndex + 1);
+            Matcher matcher = Pattern.compile("//\\[(.*?)\\]\n(.*)").matcher(numbers);
+            if (matcher.matches()) {
+                delimiter = Pattern.quote(matcher.group(1));
+                numbers = matcher.group(2);
+            } else {
+                delimiter = numbers.substring(2, 3);
+                numbers = numbers.substring(4);
+            }
         }
 
-        String regex = "[" + delimiter + "\n]";
+        String regex = "[" + delimiter + "\n]+";
         String[] nums = numbers.split(regex);
 
         int sum = 0;
