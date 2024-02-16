@@ -19,4 +19,12 @@ public class EmployeeTest {
         employee.setSalary(70000.0);
         assertEquals(70000.0, employee.getSalary());
     }
+
+    @Test
+    public void testEmployeeIsPaid() {
+        Employee employee = new Employee("101", 80000.0);
+        assertFalse(employee.isPaid());
+        employee.setPaid(true);
+        assertTrue(employee.isPaid());
+    }
 }
