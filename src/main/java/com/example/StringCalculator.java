@@ -24,8 +24,9 @@ public class StringCalculator {
             int n = Integer.parseInt(num);
             if (n < 0) {
                 negatives.add(num);
+            } else if (n <= 1000) {
+                sum += n;
             }
-            sum += n;
         }
 
         if (!negatives.isEmpty()) {
@@ -34,5 +35,4 @@ public class StringCalculator {
 
         return sum;
     }
-
 }
