@@ -14,7 +14,7 @@ public class StringCalculator {
         String delimiter = ",";
         if (numbers.startsWith("//")) {
             Matcher matcher = Pattern.compile("//\\[(.*?)\\]\n(.*)").matcher(numbers);
-            if (matcher.matches()) {
+            if (matcher.find()) {
                 delimiter = Pattern.quote(matcher.group(1));
                 numbers = matcher.group(2);
             } else {
@@ -26,16 +26,33 @@ public class StringCalculator {
         String regex = "[" + delimiter + "\n]+";
         String[] nums = numbers.split(regex);
 
-        int sum = 0;
-        List<String> negatives = new ArrayList<>();
+        int sum = calculateSum(nums);
 
+        handleNegatives(nums);
+
+        return sum;
+    }
+
+    private int calculateSum(String[] nums) {
+        int sum = 0;
+        for (String num : nums) {
+            if (!num.isEmpty()) {
+                int n = Integer.parseInt(num);
+                if (n <= 1000) {
+                    sum += n;
+                }
+            }
+        }
+        return sum;
+    }
+
+    private void handleNegatives(String[] nums) {
+        List<String> negatives = new ArrayList<>();
         for (String num : nums) {
             if (!num.isEmpty()) {
                 int n = Integer.parseInt(num);
                 if (n < 0) {
                     negatives.add(num);
-                } else if (n <= 1000) {
-                    sum += n;
                 }
             }
         }
@@ -43,7 +60,5 @@ public class StringCalculator {
         if (!negatives.isEmpty()) {
             throw new IllegalArgumentException("Negatives not allowed: " + String.join(", ", negatives));
         }
-
-        return sum;
     }
 }
